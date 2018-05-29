@@ -6,7 +6,7 @@ const BasicDetials = (props) => {
 				<p id="birthYear"> Born: {props.person.birth_year}</p>
 				<p id="height"> Height: {props.person.height}cm </p>
 				<p id="gender"> Gender: {props.person.gender}</p>
-				<p id="charSpecies">Species: {props.species.name}</p>
+				<p id="charSpecies">Species: {props.species}</p>
 			</div>
 		)
 }

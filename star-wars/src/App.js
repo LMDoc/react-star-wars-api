@@ -15,7 +15,7 @@ class App extends Component {
      person: '',
      world: [],
      species: [],
-     films: [],
+     films: '',
     }; 
   }
 
@@ -25,7 +25,7 @@ class App extends Component {
       fetch(this.state.url)
       .then(res => res.json())
       .then(person => this.setState({person}))
-      // .then(person => this.getFilms)
+      .then(data => this.getFilms)
       .then(data => fetch(this.state.person.homeworld))
       .then(res => res.json())
       .then(world => this.setState({world}))
@@ -35,28 +35,28 @@ class App extends Component {
       .catch(err => console.log('Request failed', err))
   } 
 
- // getFilms(data) {
- //    let films = [];
+ getFilms(data) {
+    fetch(this.state.person.films[0])
+      .then(resp => resp.json())
+      .then(data => this.setState({films: data}))
+  }
 
- //   Promise.all(this.state.person.films.map(url =>
+ // getFilms(data) {
+ //   Promise.all(this.state.films.map(url =>
  //     fetch(url)
  //     .then(resp => resp.json())
- //   )).then(films => console.log(films))
+ //   )).then(films => films.map(i => i.title)).then(films => this.setState({films}))
  //     .catch(err => console.log('Request failed', err))
  //  }
-
-
-
-// As an example I want to change the <ContainerName name={this.state.person.name} />
 
   render() {
     return (
       <div>
         <Header />
-        <ContainerName name={this.state.person.name} />
-        <BasicDetails person={this.state.person} species={this.state.species}/>
+        <ContainerName name={ this.state.person.name } />
+        <BasicDetails person={this.state.person} species={this.state.species.name}/>
         <World world={this.state.world} />
-        <Films films={this.state.films}/>
+        <Films films={this.state.films} />
       </div>
     )
   }

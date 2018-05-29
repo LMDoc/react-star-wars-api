@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-const World = (props) => {
+const World = ({world}) => {
 
 		return (
 			<div className="container2">
 		   <h2>Homeworld</h2>
-		   <p id="home"> {props.world.name} </p>
-		   <p id="homePop"> Population: {props.world.population} </p>
+		   <p id="home"> {world.name} (Population: {world.population}) </p>
+		   <p id="homePop"> Climate: {world.climate} </p>
 		</div>
 		)
 }
