@@ -19,26 +19,19 @@ class App extends Component {
     }; 
   }
 
-  
-
-  componentDidMount() {
-      fetch(this.state.url)
-      .then(res => res.json())
-      .then(person => this.setState({person}))
-      .then(data => this.getFilms)
-      .then(data => fetch(this.state.person.homeworld))
-      .then(res => res.json())
-      .then(world => this.setState({world}))
-      .then(data => fetch(this.state.person.species))
-      .then(res => res.json())
-      .then(species => this.setState({ species }))
-      .catch(err => console.log('Request failed', err))
-  } 
-
- getFilms(data) {
-    fetch(this.state.person.films[0])
-      .then(resp => resp.json())
-      .then(data => this.setState({films: data}))
+  async componentDidMount() {
+    const res = await fetch(this.state.url);
+    const person = await res.json();
+    this.setState({person});
+     
+    const resWorld = await fetch(this.state.person.homeworld);
+    const world = await resWorld.json();
+    this.setState({world});
+     
+    const resSpecies = await fetch(this.state.person.species);
+    const species = await resSpecies.json();
+    this.setState({species});
+    
   }
 
  // getFilms(data) {
