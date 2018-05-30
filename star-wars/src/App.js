@@ -12,18 +12,19 @@ import SearchBar from "./components/searchBar";
 class App extends Component {
   constructor(props) {
     super(props);
+    this.url = 'https://swapi.co/api/people/1/'
 
     this.state = {
-     url: '',
-     person: '',
+     isLoaded: false, 
+     person: {},
      world: [],
      species: [],
-     films: '',
+     films: [],
     };
   }
 
-  async componentDidMount() {
-    const res = await fetch(this.state.url);
+  async fetchData() {
+    const res = await fetch(this.url);
     const person = await res.json();
     await this.setState({person});
      
@@ -35,36 +36,41 @@ class App extends Component {
     const species = await resSpecies.json();
     this.setState({species});
     
+    this.setState({ films: person.films })
+    setTimeout(() => this.setState({isLoaded: true}))
+  }
+
+  componentDidMount() {
+    this.fetchData()
   }
 
   async search(input) {
     let searchURL = `https://swapi.co/api/people/?search=+${input}`;
-    console.log(searchURL)
 
     const res = await fetch(searchURL);
     const data = await res.json();
-    this.setState({url: data.results[0].url});
-    console.log(data.results[0].url)
+    if(data.results.length > 0) { this.url = data.results[0].url; this.fetchData() }
   }
 
- // getFilms(data) {
- //   Promise.all(this.state.films.map(url =>
- //     fetch(url)
- //     .then(resp => resp.json())
- //   )).then(films => films.map(i => i.title)).then(films => this.setState({films}))
- //     .catch(err => console.log('Request failed', err))
- //  }
 
-  render() {
-    return (
-      <div>
+  renderApp() {
+    return(<div>
         <Header />
-        <SearchBar handleSearch={this.search}/>
+        <SearchBar handleSearch={(input) => this.search(input)}/>
         <ContainerName name={ this.state.person.name } />
         <BasicDetails person={this.state.person} species={this.state.species.name}/>
         <World world={this.state.world} />
         <Films films={this.state.films} />
-      </div>
+      </div>)
+  }
+
+  renderLoading() {
+    return(<p>Loading</p>)
+  }
+
+  render() {
+    return (
+      this.state.isLoaded ? this.renderApp() : this.renderLoading()
     )
   }
 }

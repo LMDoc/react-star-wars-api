@@ -9,7 +9,7 @@ class SearchBar extends Component {
 			    	type="text" 
 			    	placeholder="  Type Star Wars Character here..."
 			    />
-				<input type="submit" value="Punch it!" />
+				<input id ="searchBtn" type="submit" value="Punch it!" />
 			</form>
 			);
 		}
